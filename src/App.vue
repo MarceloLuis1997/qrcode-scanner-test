@@ -1,32 +1,49 @@
 <template>
-  <div id="app">
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
-    </div>
-    <router-view/>
-  </div>
+  <v-app>
+    <v-app-bar
+      app
+      color="primary"
+      dark
+    >
+      <div class="d-flex align-center">
+        Teste QRCode Scanner
+      </div>
+    </v-app-bar>
+
+    <v-main>
+      <v-container>
+        <v-row align="center" justify="center">
+          <qrcode-scanner
+            :qrbox="250"
+            :fps="10"
+            style="width: 500px;"
+            @result="onScan"
+          />
+        </v-row>
+        <v-row align="center" justify="center">
+        <h4>Resultados:</h4>
+        </v-row>
+        <v-row v-for="(result, i) in results" :key="i" align="center" justify="center">
+          {{result}}
+        </v-row>
+      </v-container>
+    </v-main>
+  </v-app>
 </template>
 
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-}
+<script>
 
-#nav {
-  padding: 30px;
-}
+export default {
+  name: 'App',
 
-#nav a {
-  font-weight: bold;
-  color: #2c3e50;
-}
+  data: () => ({
+    results: []
+  }),
 
-#nav a.router-link-exact-active {
-  color: #42b983;
+  methods: {
+    onScan (decodedText, decodedResult) {
+      this.results.push(decodedText)
+    }
+  }
 }
-</style>
+</script>
